@@ -5,7 +5,7 @@
 define('DB_HOST', 'mysql.railway.internal');
 define('DB_NAME', 'railway');
 define('DB_USER', 'root');
-define('DB_PASS', 'HqBrOJXktSNyAQJAZyOtQdhDwolvHlHv');
+define('DB_PASS', 'ggWywOVTrlqIEpeNNwKaMcakKARgmyqZ');
 
 // إعدادات عامة
 define('API_DEBUG', true);
