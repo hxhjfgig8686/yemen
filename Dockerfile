@@ -1,13 +1,20 @@
 FROM php:8.2-apache
 
-# تفعيل mod_rewrite
+# تثبيت الإضافات المطلوبة
+RUN docker-php-ext-install pdo pdo_mysql
+
+# تشغيل rewrite module
 RUN a2enmod rewrite
 
-# السماح لـ .htaccess بالعمل
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
-
+# نسخ الملفات
 COPY . /var/www/html/
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# تعديل الصلاحيات
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
+# فتح المنفذ
 EXPOSE 80
+
+# تشغيل Apache
+CMD ["apache2-foreground"]
