@@ -1,5 +1,5 @@
 <?php
-// index.php - الراوتر الرئيسي
+// index.php
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -15,31 +15,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 // تحليل المسار
 $request_uri = $_SERVER['REQUEST_URI'];
 $script_name = $_SERVER['SCRIPT_NAME'];
-
-// إزالة مسار الملف من URI
 $path = str_replace(dirname($script_name), '', $request_uri);
 $path = parse_url($path, PHP_URL_PATH);
 $path = ltrim($path, '/');
 
-// تقسيم المسار
 $segments = explode('/', $path);
 $endpoint = $segments[0] ?? '';
 
-// خريطة المسارات
+// المسارات
 $routes = [
     'get_codes' => 'endpoints/get_codes.php',
     'add_number' => 'endpoints/add_number.php',
     'delete_number' => 'endpoints/delete_number.php',
     'receive_sms' => 'endpoints/receive_sms.php',
     'stats' => 'endpoints/stats.php',
-    'api.php' => 'endpoints/get_codes.php', // للتوافق مع الرابط القديم
+    'api.php' => 'endpoints/get_codes.php',
+    '' => 'home'
 ];
 
-// التحقق من وجود المسار
-if (isset($routes[$endpoint])) {
-    require $routes[$endpoint];
-} else {
-    // صفحة الترحيب
+if ($endpoint == '' || $endpoint == 'home') {
     require_once 'api/functions.php';
     sendResponse([
         'name' => 'SMS API Server',
@@ -51,8 +45,12 @@ if (isset($routes[$endpoint])) {
             'receive_sms' => 'POST - استقبال رسالة جديدة',
             'stats' => 'GET - إحصائيات'
         ],
-        'documentation' => '/docs',
         'status' => 'active'
     ]);
+} elseif (isset($routes[$endpoint])) {
+    require $routes[$endpoint];
+} else {
+    http_response_code(404);
+    echo json_encode(['error' => 'Endpoint not found']);
 }
 ?>
