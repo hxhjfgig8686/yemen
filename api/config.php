@@ -2,7 +2,7 @@
 // api/config.php
 
 // إعدادات قاعدة البيانات
-define('DB_HOST', 'mysql.railway.internal');
+define('DB_HOST', 'mysql://root:ggWywOVTrlqIEpeNNwKaMcakKARgmyqZ@shuttle.proxy.rlwy.net:57553/railway');
 define('DB_NAME', 'railway');
 define('DB_USER', 'root');
 define('DB_PASS', 'ggWywOVTrlqIEpeNNwKaMcakKARgmyqZ');
